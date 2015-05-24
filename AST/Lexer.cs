@@ -22,7 +22,6 @@ namespace AST
     {
         private Stream stream;
         private List<Token> source;
-        private StringBuilder currentToken;
         private char nextChar = (char)0;
         private bool endOfStream = false;
         private int row = 1;
@@ -44,11 +43,11 @@ namespace AST
             ERROR
         };
         private State state = State.START;
-        private State[] greedyStates =
+        private static readonly State[] greedyStates =
             { State.GTE, State.LTE, State.EQ, State.INCR, State.DECR,
               State.NEQ, State.COMMENT, State.ENDCOMMENT };
 
-        private Dictionary<State, TokenType> stateToToken = new Dictionary<State, TokenType>()
+        private static readonly Dictionary<State, TokenType> stateToToken = new Dictionary<State, TokenType>()
             {
                 {State.GT, TokenType.GT},
                 {State.GTE, TokenType.GTE},
@@ -74,7 +73,7 @@ namespace AST
                 {State.RBRACE, TokenType.RBRACE}
             };
 
-        private Dictionary<string, TokenType> stringToKeyword = new Dictionary<string, TokenType>()
+        private static readonly Dictionary<string, TokenType> stringToKeyword = new Dictionary<string, TokenType>()
             {
                 {"int", TokenType.INT},
                 {"void", TokenType.VOID},
@@ -85,7 +84,7 @@ namespace AST
                 {"return", TokenType.RETURN}
             };
 
-        private static int[,] transitionTable = new int[27, 21]
+        private static readonly int[,] transitionTable = new int[27, 21]
         {
              /* SP  AL  DI  _   +   -   *   /   <   >   =   !   ;   ,   (   )   [   ]   {   }   OTHER */
 /*0  START */  {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},

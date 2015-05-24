@@ -29,6 +29,12 @@ namespace AST
         private int column = 1;
 
         private const string alphabet = "_+-*/<>=!;,()[]{}";
+        private const int ALPHABET_SPACE    = 0,
+                          ALPHABET_ALPHA    = 1,
+                          ALPHABET_DIGIT    = 2,
+                          ALPHABET_SPECIAL  = 3,
+                          ALPHABET_OTHER    = 20;
+
         private enum State
         {
             START = 0, ID_OR_KEYWORD, NUMBER, GT, LT, GTE, LTE, ASSIGN, EQ,
@@ -144,26 +150,30 @@ namespace AST
             }
 
             // update DFA state
+            int transition;
+
             if (Char.IsWhiteSpace(nextChar))
             {
-                state = (State)transitionTable[(int)state, 0];
+                transition = ALPHABET_SPACE;
             }
             else if (Char.IsLetter(nextChar))
             {
-                state = (State)transitionTable[(int)state, 1];
+                transition = ALPHABET_ALPHA;
             }
             else if (Char.IsDigit(nextChar))
             {
-                state = (State)transitionTable[(int)state, 2];
+                transition = ALPHABET_DIGIT;
             }
             else if (alphabet.Contains(nextChar))
             {
-                state = (State)transitionTable[(int)state, alphabet.IndexOf(nextChar) + 3];
+                transition = alphabet.IndexOf(nextChar) + ALPHABET_SPECIAL;
             }
             else
             {
-                state = (State)transitionTable[(int)state, 20];
+                transition = ALPHABET_OTHER;
             }
+
+            state = (State)transitionTable[(int)state, transition];
         }
 
         public Token GetNextToken()

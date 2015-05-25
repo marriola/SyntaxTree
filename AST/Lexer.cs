@@ -224,7 +224,7 @@ namespace AST
                     return new IntegerToken(Convert.ToInt32(tokenText));
 
                 default:
-                    return new Token(stateToToken[state]);
+                    return new Token(stateToToken[initialState]);
             }
         }
 

@@ -46,5 +46,22 @@ namespace LexerTests
             Assert.AreEqual(TokenType.ID, token.type, "token 2 wrong type");
             Assert.AreEqual("num_1", ((IdentifierToken)token).stringValue, "token 2 wrong value");
         }
+
+        [TestMethod]
+        public void ReadGreedyToken()
+        {
+            Lexer lexer = new Lexer(StreamFromString("var != 15"));
+
+            Token token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.ID, token.type, "token 1 wrong type");
+            Assert.AreEqual("var", ((IdentifierToken)token).stringValue, "token 1 wrong value");
+
+            token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.NEQ, token.type, "token 2 wrong type");
+
+            token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.INTEGER, token.type, "token 3 wrong type");
+            Assert.AreEqual(15, ((IntegerToken)token).intValue, "token 3 wrong type");
+        }
     }
 }

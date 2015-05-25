@@ -62,4 +62,18 @@ namespace AST
             this.intValue = intValue;
         }
     }
+
+    public class CommentToken : Token
+    {
+        public string stringValue
+        {
+            get;
+            private set;
+        }
+
+        public CommentToken(string stringValue) : base(TokenType.COMMENT)
+        {
+            this.stringValue = stringValue;
+        }
+    }
 }

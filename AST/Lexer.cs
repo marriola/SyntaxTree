@@ -100,8 +100,8 @@ namespace AST
 /*10 INCR*/    {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*11 MINUS*/   {0,  1,  2,  1,  9,  12, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*12 DECR*/    {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*13 TIMES*/   {0,  1,  2,  1,  9,  11, 25, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*14 DIVIDE*/  {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*13 TIMES*/   {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*14 DIVIDE*/  {0,  1,  2,  1,  9,  11, 25, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*15 NOT*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  16, 15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*16 NEQ*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*17 SEMI*/    {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
@@ -124,17 +124,18 @@ namespace AST
 
         private void GetNextChar()
         {
-            if (endOfStream)
-            {
-                throw new EndOfStreamException();
-            }
+            //if (endOfStream)
+            //{
+            //    throw new EndOfStreamException();
+            //}
 
             // get next character, update row and column
             nextChar = (char)stream.ReadByte();
 
             if (nextChar == 0xffff)
             {
-                endOfStream = true;
+                Console.WriteLine("end of file!");
+                this.endOfStream = true;
                 state = State.START;
                 return;
             }
@@ -180,6 +181,10 @@ namespace AST
             // Skip whitespace.
             while (state == State.START)
             {
+                if (endOfStream)
+                {
+                    return null;
+                }
                 GetNextChar();
             }
 
@@ -220,6 +225,9 @@ namespace AST
                         return new IdentifierToken(tokenText);
                     }
 
+                case State.ENDCOMMENT:
+                    return new CommentToken(tokenText.Substring(2, tokenText.Length - 4));
+
                 case State.NUMBER:
                     return new IntegerToken(Convert.ToInt32(tokenText));
 
@@ -230,6 +238,16 @@ namespace AST
 
         public List<Token> lex()
         {
+            source = new List<Token>();
+            while (!endOfStream)
+            {
+                Token token = GetNextToken();
+                if (token != null)
+                {
+                    Console.WriteLine(token.ToString());
+                    source.Add(token);
+                }
+            }
             return source;
         }
     }

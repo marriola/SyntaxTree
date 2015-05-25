@@ -63,5 +63,12 @@ namespace LexerTests
             Assert.AreEqual(TokenType.INTEGER, token.type, "token 3 wrong type");
             Assert.AreEqual(15, ((IntegerToken)token).intValue, "token 3 wrong type");
         }
+
+        [TestMethod]
+        public void TestLex()
+        {
+            Lexer lexer = new Lexer(StreamFromString("int"));
+            lexer.lex();
+        }
     }
 }

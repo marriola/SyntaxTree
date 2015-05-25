@@ -34,6 +34,27 @@ namespace AST
             {
                 SourceReader reader = new SourceReader(OpenDialog.FileName);
                 List<Token> source = reader.lex();
+                List<string> items = new List<string>();
+                foreach (Token token in source)
+                {
+                    if (token.type == TokenType.ID)
+                    {
+                        items.Add("ID " + ((IdentifierToken)token).stringValue);
+                    }
+                    else if (token.type == TokenType.INTEGER)
+                    {
+                        items.Add("INTEGER " + ((IntegerToken)token).intValue);
+                    }
+                    else if (token.type == TokenType.COMMENT)
+                    {
+                        items.Add("COMMENT " + ((CommentToken)token).stringValue);
+                    }
+                    else
+                    {
+                        items.Add(token.type.ToString());
+                    }
+                }
+                listBox1.DataSource = items;
             }
         }
     }

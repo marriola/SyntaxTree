@@ -36,7 +36,7 @@ namespace AST
 
         private enum State
         {
-            START = 0, ID_OR_KEYWORD, NUMBER, GT, LT, GTE, LTE, ASSIGN, EQ,
+            START = 0, ID_OR_KEYWORD, NUMBER, LT, GT, LTE, GTE, ASSIGN, EQ,
             PLUS, INCR, MINUS, DECR, TIMES, DIVIDE, NOT, NEQ, SEMI, COMMA,
             LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE,
             COMMENT, ENDCOMMENT,
@@ -90,10 +90,10 @@ namespace AST
 /*0  START */  {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*1  ID|KW */  {0,  1,  1,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*2  NUMBER*/  {0,  26, 2,  26, 9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*3  GT*/      {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  5,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*4  LT*/      {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  6,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*5  GTE*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
-/*6  LTE*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*3  LT*/      {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  5,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*4  GT*/      {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  6,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*5  LTE*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
+/*6  GTE*/     {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*7  ASSIGN*/  {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  8,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*8  EQ*/      {0,  1,  2,  1,  9,  11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
 /*9  PLUS*/    {0,  1,  2,  1,  10, 11, 13, 14, 3,  4,  7,  15, 17, 18, 19, 20, 21, 22, 23, 24, 27},
@@ -124,17 +124,16 @@ namespace AST
 
         private void GetNextChar()
         {
-            //if (endOfStream)
-            //{
-            //    throw new EndOfStreamException();
-            //}
+            if (endOfStream)
+            {
+                throw new EndOfStreamException();
+            }
 
             // get next character, update row and column
             nextChar = (char)stream.ReadByte();
 
             if (nextChar == 0xffff)
             {
-                Console.WriteLine("end of file!");
                 this.endOfStream = true;
                 state = State.START;
                 return;
@@ -166,7 +165,8 @@ namespace AST
             }
             else if (alphabet.Contains(nextChar))
             {
-                transition = alphabet.IndexOf(nextChar) + ALPHABET_SPECIAL;
+                int index = alphabet.IndexOf(nextChar);
+                transition = index + ALPHABET_SPECIAL;
             }
             else
             {

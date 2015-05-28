@@ -9,7 +9,7 @@ namespace AST
     public enum TokenType
     {
         ERROR,
-        ID, INTEGER, COMMENT,
+        ID, INTEGER, STRING, COMMENT,
         INT, VOID,
         IF, ELSE, FOR, WHILE, RETURN,
         PLUS, MINUS, TIMES, DIVIDE,
@@ -63,6 +63,20 @@ namespace AST
         }
     }
 
+    public class StringToken : Token
+    {
+        public string stringValue
+        {
+            get;
+            private set;
+        }
+
+        public StringToken(string stringValue)
+            : base(TokenType.STRING)
+        {
+            this.stringValue = stringValue;
+        }
+    }
     public class CommentToken : Token
     {
         public string stringValue
@@ -71,7 +85,8 @@ namespace AST
             private set;
         }
 
-        public CommentToken(string stringValue) : base(TokenType.COMMENT)
+        public CommentToken(string stringValue)
+            : base(TokenType.COMMENT)
         {
             this.stringValue = stringValue;
         }

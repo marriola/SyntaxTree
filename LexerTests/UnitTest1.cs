@@ -50,18 +50,34 @@ namespace LexerTests
         [TestMethod]
         public void ReadGreedyToken()
         {
-            Lexer lexer = new Lexer(StreamFromString("var != 15"));
+            Lexer lexer = new Lexer(StreamFromString("!= == <= >= ++ --"));
 
             Token token = lexer.GetNextToken();
-            Assert.AreEqual(TokenType.ID, token.type, "token 1 wrong type");
-            Assert.AreEqual("var", ((IdentifierToken)token).stringValue, "token 1 wrong value");
+            Assert.AreEqual(TokenType.NEQ, token.type, "!= failed");
 
             token = lexer.GetNextToken();
-            Assert.AreEqual(TokenType.NEQ, token.type, "token 2 wrong type");
+            Assert.AreEqual(TokenType.EQ, token.type, "== failed");
 
             token = lexer.GetNextToken();
-            Assert.AreEqual(TokenType.INTEGER, token.type, "token 3 wrong type");
-            Assert.AreEqual(15, ((IntegerToken)token).intValue, "token 3 wrong type");
+            Assert.AreEqual(TokenType.LTE, token.type, "<= failed");
+
+            token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.GTE, token.type, ">= failed");
+
+            token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.INCREMENT, token.type, "++ failed");
+
+            token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.DECREMENT, token.type, "-- failed");
+        }
+
+        [TestMethod]
+        public void ReadStringToken()
+        {
+            Lexer lexer = new Lexer(StreamFromString("\"a string\""));
+            Token token = lexer.GetNextToken();
+            Assert.AreEqual(TokenType.STRING, token.type, "wrong token type");
+            Assert.AreEqual("a string", ((StringToken)token).stringValue, "wrong token value");
         }
 
         [TestMethod]

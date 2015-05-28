@@ -19,7 +19,7 @@ namespace AST
             InitializeComponent();
             OpenDialog = new OpenFileDialog();
             OpenDialog.DefaultExt = "c";
-            OpenDialog.Filter = "C source files (*.c)|*.c|C header files (*.h)|*.h|All files (*.*)|*.*";
+            OpenDialog.Filter = "C- source files (*.cm)|*.cm|All files (*.*)|*.*";
         }
 
         private void menuFileQuit_Click(object sender, EventArgs e)
@@ -33,13 +33,24 @@ namespace AST
             if (result == DialogResult.OK)
             {
                 SourceReader reader = new SourceReader(OpenDialog.FileName);
-                List<Token> source = reader.lex();
+                List<Token> source;
                 List<string> items = new List<string>();
+
+                try
+                {
+                    source = reader.lex();
+                }
+                catch (SyntaxError syntaxError)
+                {
+                    MessageBox.Show(syntaxError.Message);
+                    return;
+                }
+
                 foreach (Token token in source)
                 {
                     if (token.type == TokenType.ID)
                     {
-                        items.Add("ID " + ((IdentifierToken)token).stringValue);
+                        items.Add("ID '" + ((IdentifierToken)token).stringValue + "'");
                     }
                     else if (token.type == TokenType.INTEGER)
                     {
@@ -47,7 +58,7 @@ namespace AST
                     }
                     else if (token.type == TokenType.COMMENT)
                     {
-                        items.Add("COMMENT " + ((CommentToken)token).stringValue);
+                        items.Add("COMMENT '" + ((CommentToken)token).stringValue + "'");
                     }
                     else
                     {

@@ -35,8 +35,8 @@
             this.menuFileQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Lexer = new System.Windows.Forms.TabPage();
-            this.tabParser = new System.Windows.Forms.TabPage();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.tabParser = new System.Windows.Forms.TabPage();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -68,7 +68,7 @@
             // 
             this.menuFileLoad.Image = ((System.Drawing.Image)(resources.GetObject("menuFileLoad.Image")));
             this.menuFileLoad.Name = "menuFileLoad";
-            this.menuFileLoad.Size = new System.Drawing.Size(97, 22);
+            this.menuFileLoad.Size = new System.Drawing.Size(152, 22);
             this.menuFileLoad.Text = "&Load";
             this.menuFileLoad.Click += new System.EventHandler(this.menuFileLoad_Click);
             // 
@@ -76,7 +76,7 @@
             // 
             this.menuFileQuit.Image = ((System.Drawing.Image)(resources.GetObject("menuFileQuit.Image")));
             this.menuFileQuit.Name = "menuFileQuit";
-            this.menuFileQuit.Size = new System.Drawing.Size(97, 22);
+            this.menuFileQuit.Size = new System.Drawing.Size(152, 22);
             this.menuFileQuit.Text = "&Quit";
             this.menuFileQuit.Click += new System.EventHandler(this.menuFileQuit_Click);
             // 
@@ -102,6 +102,15 @@
             this.Lexer.Text = "Lexer";
             this.Lexer.UseVisualStyleBackColor = true;
             // 
+            // listBox1
+            // 
+            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(3, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(278, 217);
+            this.listBox1.TabIndex = 0;
+            // 
             // tabParser
             // 
             this.tabParser.Controls.Add(this.treeView1);
@@ -112,15 +121,6 @@
             this.tabParser.TabIndex = 1;
             this.tabParser.Text = "Parser";
             this.tabParser.UseVisualStyleBackColor = true;
-            // 
-            // listBox1
-            // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(3, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(278, 217);
-            this.listBox1.TabIndex = 0;
             // 
             // treeView1
             // 

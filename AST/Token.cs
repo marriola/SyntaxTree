@@ -33,6 +33,11 @@ namespace AST
         {
             this.type = type;
         }
+
+        public override string ToString()
+        {
+            return type.ToString();
+        }
     }
 
     public class IdentifierToken : Token
@@ -47,6 +52,11 @@ namespace AST
         {
             this.stringValue = stringValue;
         }
+
+        public override string ToString()
+        {
+            return "ID '" + stringValue + "'";
+        }
     }
 
     public class IntegerToken : Token
@@ -60,6 +70,11 @@ namespace AST
         public IntegerToken(int intValue) : base(TokenType.INTEGER)
         {
             this.intValue = intValue;
+        }
+
+        public override string ToString()
+        {
+            return "INT " + intValue;
         }
     }
 
@@ -76,6 +91,11 @@ namespace AST
         {
             this.stringValue = stringValue;
         }
+
+        public override string ToString()
+        {
+            return "STRING '" + stringValue + "'";
+        }
     }
     public class CommentToken : Token
     {
@@ -89,6 +109,11 @@ namespace AST
             : base(TokenType.COMMENT)
         {
             this.stringValue = stringValue;
+        }
+
+        public override string ToString()
+        {
+            return "COMMENT '" + stringValue + "'";
         }
     }
 }

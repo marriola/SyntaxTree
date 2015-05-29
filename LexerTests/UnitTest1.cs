@@ -31,7 +31,7 @@ namespace LexerTests
         {
             Lexer lexer = new Lexer(StreamFromString("1337"));
             Token token = lexer.GetNextToken();
-            Assert.AreEqual(TokenType.INTEGER, token.type, "wrong token type");
+            Assert.AreEqual(TokenType.INTLITERAL, token.type, "wrong token type");
             Assert.AreEqual(1337, ((IntegerToken)token).intValue, "wrong token value");
         }
 
@@ -76,7 +76,7 @@ namespace LexerTests
         {
             Lexer lexer = new Lexer(StreamFromString("\"a string\""));
             Token token = lexer.GetNextToken();
-            Assert.AreEqual(TokenType.STRING, token.type, "wrong token type");
+            Assert.AreEqual(TokenType.STRINGLITERAL, token.type, "wrong token type");
             Assert.AreEqual("a string", ((StringToken)token).stringValue, "wrong token value");
         }
 

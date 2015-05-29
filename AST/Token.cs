@@ -9,8 +9,8 @@ namespace AST
     public enum TokenType
     {
         ERROR,
-        ID, INTEGER, STRING, COMMENT,
-        INT, VOID,
+        ID, INTLITERAL, STRINGLITERAL, COMMENT,
+        INT, VOID, STRING,
         IF, ELSE, FOR, WHILE, RETURN,
         PLUS, MINUS, TIMES, DIVIDE,
         LT, LTE, EQ, NEQ, GTE, GT,
@@ -83,14 +83,14 @@ namespace AST
         }
 
         public IntegerToken(int row, int column, int intValue)
-            : base(row, column, TokenType.INTEGER)
+            : base(row, column, TokenType.INTLITERAL)
         {
             this.intValue = intValue;
         }
 
         public override string ToString()
         {
-            return "INT " + intValue;
+            return "INTLITERAL " + intValue;
         }
     }
 
@@ -103,14 +103,14 @@ namespace AST
         }
 
         public StringToken(int row, int column, string stringValue)
-            : base(row, column, TokenType.STRING)
+            : base(row, column, TokenType.STRINGLITERAL)
         {
             this.stringValue = stringValue;
         }
 
         public override string ToString()
         {
-            return "STRING '" + stringValue + "'";
+            return "STRINGLITERAL '" + stringValue + "'";
         }
     }
     public class CommentToken : Token

@@ -75,6 +75,7 @@ namespace AST
             {
                 {"int", TokenType.INT},
                 {"void", TokenType.VOID},
+                {"string", TokenType.STRING},
                 {"if", TokenType.IF},
                 {"else", TokenType.ELSE},
                 {"for", TokenType.FOR},

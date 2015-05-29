@@ -27,7 +27,7 @@ namespace AST
 
         ///////////////////////////////////////////////////////////////////////
 
-        private Token NextToken()
+        private Token GetNextToken()
         {
             return currentToken = source[sourceIndex++];
         }
@@ -38,7 +38,7 @@ namespace AST
             {
                 throw ParseError(tokenType.ToString());
             }
-            return NextToken();
+            return GetNextToken();
         }
 
         ///////////////////////////////////////////////////////////////////////
@@ -60,8 +60,9 @@ namespace AST
             else if (currentToken.type == TokenType.LBRACK)
             {
                 Match(TokenType.LBRACK);
-                IntegerToken arraySize = (IntegerToken)Match(TokenType.INTEGER);
+                IntegerToken arraySize = (IntegerToken)Match(TokenType.INTLITERAL);
                 Match(TokenType.RBRACK);
+                Match(TokenType.SEMI);
 
                 return new ArrayDeclarationNode(tokenToValueType[typeSpecifier.type], identifier.stringValue, arraySize.intValue);
             }
@@ -81,7 +82,7 @@ namespace AST
             {
                 throw ParseError("INT or STRING");
             }
-            NextToken();
+            GetNextToken();
 
             IdentifierToken identifier = (IdentifierToken)currentToken;
             Match(TokenType.ID);
@@ -115,7 +116,7 @@ namespace AST
                     parameters.Add(ParseParameter());
                     if (currentToken.type == TokenType.COMMA)
                     {
-                        Match(TokenType.COMMA);
+                        GetNextToken();
                     }
                     else
                     {
@@ -129,9 +130,115 @@ namespace AST
 
         ///////////////////////////////////////////////////////////////////////
 
-        private CompoundStatementNode ParseCompoundStatement()
+        private List<DeclarationNode> ParseLocalDeclarations()
+        {
+            List<DeclarationNode> localDeclarations = new List<DeclarationNode>();
+
+            while (currentToken.type == TokenType.INT || currentToken.type == TokenType.STRING)
+            {
+                Token typeSpecifier = currentToken;
+                GetNextToken();
+                IdentifierToken identifier = (IdentifierToken)currentToken;
+                Match(TokenType.ID);
+                localDeclarations.Add(ParseVariableDeclaration(typeSpecifier, identifier));
+            }
+
+            return localDeclarations;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private IfStatementNode ParseIfStatement()
         {
             return null;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private ForStatementNode ParseForStatement()
+        {
+            return null;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private WhileStatementNode ParseWhileStatement()
+        {
+            return null;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private ReturnStatementNode ParseReturnStatement()
+        {
+            return null;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private ExpressionStatementNode ParseExpressionStatement()
+        {
+            return null;
+        }
+        
+        ///////////////////////////////////////////////////////////////////////
+
+        private List<StatementNode> ParseStatementList()
+        {
+            List<StatementNode> statementList = new List<StatementNode>();
+
+            while (currentToken.type != TokenType.RBRACE)
+            {
+                StatementNode statement;
+
+                switch (currentToken.type)
+                {
+                    case TokenType.LBRACE:
+                        statement = ParseCompoundStatement();
+                        break;
+
+                    case TokenType.IF:
+                        statement = ParseIfStatement();
+                        break;
+
+                    case TokenType.FOR:
+                        statement = ParseForStatement();
+                        break;
+
+                    case TokenType.WHILE:
+                        statement = ParseWhileStatement();
+                        break;
+
+                    case TokenType.RETURN:
+                        statement = ParseReturnStatement();
+                        break;
+
+                    case TokenType.SEMI:
+                    case TokenType.ID:
+                    case TokenType.LPAREN:
+                    case TokenType.INTLITERAL:
+                    case TokenType.STRINGLITERAL:
+                        statement = ParseExpressionStatement();
+                        break;
+
+                    default:
+                        throw ParseError("IF, FOR, WHILE, RETURN, compound statement or expression statement");
+                }
+
+                statementList.Add(statement);
+            }
+
+            return statementList;
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        private CompoundStatementNode ParseCompoundStatement()
+        {
+            List<DeclarationNode> localDeclarations = ParseLocalDeclarations();
+            List<StatementNode> statementList = ParseStatementList();
+            Match(TokenType.RBRACE);
+            return new CompoundStatementNode(localDeclarations, statementList);
         }
 
         ///////////////////////////////////////////////////////////////////////

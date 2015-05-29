@@ -9,17 +9,26 @@ namespace AST
 {
     class SourceReader
     {
-        private FileStream stream;
+        private string path;
+        List<Token> source;
 
-        public SourceReader(string filename)
+        public SourceReader(string path)
         {
-            stream = File.OpenRead(filename);
+            this.path = path;
         }
 
         public List<Token> lex()
         {
+            FileStream stream = File.OpenRead(path);
             Lexer lexer = new Lexer(stream);
-            return lexer.lex();
+            source = lexer.lex();
+            stream.Close();
+            return source;
+        }
+
+        public ProgramNode parse()
+        {
+            return new Parser(source).Parse();
         }
     }
 }

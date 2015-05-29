@@ -214,6 +214,24 @@ namespace AST
         }
     }
 
+    class ReturnStatementNode : StatementNode
+    {
+        public ExpressionNode expression
+        {
+            get;
+            private set;
+        }
+    }
+
+    class ExpressionStatementNode : StatementNode
+    {
+        public ExpressionNode expression
+        {
+            get;
+            private set;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // Expression nodes
     ///////////////////////////////////////////////////////////////////////////

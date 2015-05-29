@@ -23,14 +23,28 @@ namespace AST
 
     public class Token
     {
+        public int row
+        {
+            get;
+            private set;
+        }
+
+        public int column
+        {
+            get;
+            private set;
+        }
+
         public TokenType type
         {
             get;
             protected set;
         }
 
-        public Token(TokenType type)
+        public Token(int row, int column, TokenType type)
         {
+            this.row = row;
+            this.column = column;
             this.type = type;
         }
 
@@ -48,7 +62,8 @@ namespace AST
             private set;
         }
 
-        public IdentifierToken(string stringValue) : base(TokenType.ID)
+        public IdentifierToken(int row, int column, string stringValue)
+            : base(row, column, TokenType.ID)
         {
             this.stringValue = stringValue;
         }
@@ -67,7 +82,8 @@ namespace AST
             private set;
         }
 
-        public IntegerToken(int intValue) : base(TokenType.INTEGER)
+        public IntegerToken(int row, int column, int intValue)
+            : base(row, column, TokenType.INTEGER)
         {
             this.intValue = intValue;
         }
@@ -86,8 +102,8 @@ namespace AST
             private set;
         }
 
-        public StringToken(string stringValue)
-            : base(TokenType.STRING)
+        public StringToken(int row, int column, string stringValue)
+            : base(row, column, TokenType.STRING)
         {
             this.stringValue = stringValue;
         }
@@ -105,8 +121,8 @@ namespace AST
             private set;
         }
 
-        public CommentToken(string stringValue)
-            : base(TokenType.COMMENT)
+        public CommentToken(int row, int column, string stringValue)
+            : base(row, column, TokenType.COMMENT)
         {
             this.stringValue = stringValue;
         }

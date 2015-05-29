@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace AST
 {
+    [Serializable]
     class SyntaxError : Exception
     {
-        private int row;
-        private int column;
-        private string message;
-
         public SyntaxError(int row, int column, string message)
             : base("Syntax error on row " + row + ", column " + column + ": " + message)
         { }
@@ -224,24 +221,24 @@ namespace AST
                 case State.ID_OR_KEYWORD:
                     if (stringToKeyword.ContainsKey(tokenText))
                     {
-                        return new Token(stringToKeyword[tokenText]);
+                        return new Token(row, column, stringToKeyword[tokenText]);
                     }
                     else
                     {
-                        return new IdentifierToken(tokenText);
+                        return new IdentifierToken(row, column, tokenText);
                     }
 
                 case State.ENDCOMMENT:
-                    return new CommentToken(tokenText.Substring(2, tokenText.Length - 4));
+                    return new CommentToken(row, column, tokenText.Substring(2, tokenText.Length - 4));
 
                 case State.STRING:
-                    return new StringToken(tokenText.Substring(1, tokenText.Length - 1));
+                    return new StringToken(row, column, tokenText.Substring(1, tokenText.Length - 1));
 
                 case State.NUMBER:
-                    return new IntegerToken(Convert.ToInt32(tokenText));
+                    return new IntegerToken(row, column, Convert.ToInt32(tokenText));
 
                 default:
-                    return new Token(stateToToken[initialState]);
+                    return new Token(row, column, stateToToken[initialState]);
             }
         }
 

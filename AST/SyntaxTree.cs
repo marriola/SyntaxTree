@@ -51,8 +51,17 @@ namespace AST
 
     class DeclarationNode : Node
     {
-        ValueType type;
-        string identifier;
+        public ValueType type
+        {
+            get;
+            private set;
+        }
+
+        public string identifier
+        {
+            get;
+            private set;
+        }
 
         public DeclarationNode(ValueType type, string identifier)
         {
@@ -63,7 +72,11 @@ namespace AST
 
     class ParameterNode : DeclarationNode
     {
-        bool isArray;
+        public bool isArray
+        {
+            get;
+            private set;
+        }
 
         public ParameterNode(ValueType type, string identifier, bool isArray)
             : base(type, identifier)
@@ -74,7 +87,11 @@ namespace AST
 
     class ArrayDeclarationNode : DeclarationNode
     {
-        int size;
+        public int size
+        {
+            get;
+            private set;
+        }
 
         public ArrayDeclarationNode(ValueType type, string identifier, int size)
             : base(type, identifier)
@@ -85,8 +102,17 @@ namespace AST
 
     class FunctionDeclarationNode : DeclarationNode
     {
-        List<ParameterNode> parameters;
-        CompoundStatementNode body;
+        public List<ParameterNode> parameters
+        {
+            get;
+            private set;
+        }
+
+        public CompoundStatementNode body
+        {
+            get;
+            private set;
+        }
 
         public FunctionDeclarationNode(ValueType type, string identifier, List<ParameterNode> parameters, CompoundStatementNode body)
             : base(type, identifier)
@@ -106,29 +132,86 @@ namespace AST
 
     class CompoundStatementNode : StatementNode
     {
-        List<DeclarationNode> localDeclarations;
-        List<StatementNode> statements;
+        public List<DeclarationNode> localDeclarations
+        {
+            get;
+            private set;
+        }
+
+        public List<StatementNode> statementList
+        {
+            get;
+            private set;
+        }
+
+        public CompoundStatementNode(List<DeclarationNode> localDeclarations, List<StatementNode> statementList)
+        {
+            this.localDeclarations = localDeclarations;
+            this.statementList = statementList;
+        }
     }
 
     class IfStatementNode : StatementNode
     {
-        ExpressionNode condition;
-        StatementNode thenStatement;
-        StatementNode elseStatement;
+        public ExpressionNode condition
+        {
+            get;
+            private set;
+        }
+
+        public StatementNode thenStatement
+        {
+            get;
+            private set;
+        }
+
+        public StatementNode elseStatement
+        {
+            get;
+            private set;
+        }
     }
 
     class ForStatementNode : StatementNode
     {
-        ExpressionNode initializer;
-        ExpressionNode test;
-        ExpressionNode update;
-        StatementNode body;
+        public ExpressionNode initializer
+        {
+            get;
+            private set;
+        }
+
+        public ExpressionNode test
+        {
+            get;
+            private set;
+        }
+
+        public ExpressionNode update
+        {
+            get;
+            private set;
+        }
+
+        public StatementNode body
+        {
+            get;
+            private set;
+        }
     }
 
     class WhileStatementNode : StatementNode
     {
-        ExpressionNode test;
-        StatementNode body;
+        public ExpressionNode test
+        {
+            get;
+            private set;
+        }
+
+        public StatementNode body
+        {
+            get;
+            private set;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -137,56 +220,116 @@ namespace AST
 
     class ExpressionNode : Node
     {
-        ValueType type;
-        bool isArray;
+        public ValueType type
+        {
+            get;
+            private set;
+        }
+
+        public bool isArray
+        {
+            get;
+            private set;
+        }
     }
 
     class IntegerLiteralExpressionNode : ExpressionNode
     {
-        int value;
+        public int value
+        {
+            get;
+            private set;
+        }
     }
 
     class VariableExpressionNode : ExpressionNode
     {
-        string name;
+        public string name
+        {
+            get;
+            private set;
+        }
     }
 
     class SubscriptExpressionNode : VariableExpressionNode
     {
-        int index;
+        public int index
+        {
+            get;
+            private set;
+        }
     }
 
     class CallExpressionNode : ExpressionNode
     {
-        string identifier;
-        List<ExpressionNode> arguments;
+        public string identifier
+        {
+            get;
+            private set;
+        }
+
+        public List<ExpressionNode> arguments
+        {
+            get;
+            private set;
+        }
     }
 
     class BinaryExpressionNode : ExpressionNode
     {
-        ExpressionNode left;
-        ExpressionNode right;
+        public ExpressionNode left
+        {
+            get;
+            private set;
+        }
+
+        public ExpressionNode right
+        {
+            get;
+            private set;
+        }
     }
 
     class AdditiveExpressionNode : BinaryExpressionNode
     {
-        AdditiveOperator addop;
+        public AdditiveOperator addop
+        {
+            get;
+            private set;
+        }
     }
 
     class MultiplicativeExpressionNode : BinaryExpressionNode
     {
-        MultiplicativeOperator multop;
+        public MultiplicativeOperator multop
+        {
+            get;
+            private set;
+        }
     }
 
     class RelationalExpressionNode : BinaryExpressionNode
     {
-        RelationalOperator relop;
+        public RelationalOperator relop
+        {
+            get;
+            private set;
+        }
     }
 
 
     class UnaryExpressionNode : ExpressionNode
     {
-        VariableExpressionNode variable;
-        UnaryOperator unop;
+        public VariableExpressionNode variable
+        {
+            get;
+            private set;
+        }
+        
+        public UnaryOperator unop
+        {
+            get;
+            private set;
+        }
     }
 }
